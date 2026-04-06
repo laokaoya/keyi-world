@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keyi Li · 李柯毅</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=DM+Mono:wght@300;400&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+/* ── RESET ─────────────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box }
+:root {
+  --forest: #0C1A0E;
+  --moss:   #142018;
+  --fern:   #243D2C;
+  --fern2:  #2E5038;
+  --sage:   #567A62;
+  --mist:   #8BB09A;
+  --dew:    #B8D0C2;
+  --cream:  #EFE8D6;
+  --parch:  #E3D9C0;
+  --earth:  #6B4A22;
+  --amber:  #A87430;
+  --ink:    #090E0A;
+  --mid:    #4A4A38;
+  --soft:   #7A7A60;
+}
+
+html { scroll-behavior: smooth }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* bilingual */
+[data-lang="zh"] .en { display: none !important }
+[data-lang="en"] .zh { display: none !important }
+
+/* ── GRAIN ─────────────────────────────────────────────── */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9990;
+  opacity: .042;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px;
+  animation: grain .45s steps(1) infinite;
+}
+@keyframes grain {
+  0%  { transform: translate(0,0) }
+  20% { transform: translate(-6%,-12%) }
+  40% { transform: translate(12%,6%) }
+  60% { transform: translate(-8%,18%) }
+  80% { transform: translate(6%,-8%) }
+  100%{ transform: translate(-4%,4%) }
+}
+
+/* ── SCROLL PROGRESS ───────────────────────────────────── */
+#prog {
+  position: fixed; left: 0; top: 0;
+  width: 2px; height: 0%;
+  background: var(--sage);
+  z-index: 9998; transition: height .06s linear;
+}
+
+/* ── CURSOR ────────────────────────────────────────────── */
+#cur  { position:fixed;width:7px;height:7px;background:var(--sage);border-radius:50%;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:transform .15s,background .2s }
+#curR { position:fixed;width:30px;height:30px;border:1px solid rgba(86,122,98,.5);border-radius:50%;pointer-events:none;z-index:9996;transform:translate(-50%,-50%);transition:width .25s,height .25s,border-color .25s }
+body:has(a:hover,button:hover) #cur  { transform:translate(-50%,-50%) scale(1.6);background:var(--amber) }
+body:has(a:hover,button:hover) #curR { width:50px;height:50px;border-color:var(--amber) }
+body:has(#identity:hover) #cur { background:rgba(86,122,98,.4) }
+
+/* ── NAV ───────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 1.4rem 5vw;
+  display: flex; align-items: center; justify-content: space-between;
+}
+nav.on {
+  background: rgba(239,232,214,.88);
+  backdrop-filter: blur(20px) saturate(120%);
+  border-bottom: 1px solid rgba(184,208,194,.4);
+}
+.n-logo {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 1.05rem; font-weight: 700;
+  color: var(--forest); text-decoration: none; letter-spacing: .02em;
+}
+nav.on .n-logo { color: var(--forest) }
+nav:not(.on) .n-logo { color: var(--cream) }
+.n-row { display: flex; align-items: center; gap: 2rem }
+.n-a {
+  font-family: 'DM Mono', monospace; font-size: .58rem;
+  letter-spacing: .24em; text-transform: uppercase;
+  text-decoration: none; transition: color .2s;
+}
+nav.on .n-a { color: var(--mid) }
+nav:not(.on) .n-a { color: rgba(239,232,214,.55) }
+.n-a:hover { color: var(--sage) !important }
+.lang-btn {
+  display: flex; align-items: center; gap: .4rem;
+  font-family: 'DM Mono', monospace; font-size: .57rem; letter-spacing: .14em;
+  background: none; cursor: none;
+  transition: color .2s; padding: .3rem .7rem;
+  border: 1px solid transparent;
+}
+nav.on  .lang-btn { color: var(--mid);  border-color: rgba(184,208,194,.5) }
+nav:not(.on) .lang-btn { color: rgba(239,232,214,.5); border-color: rgba(239,232,214,.2) }
+.lang-btn:hover { color: var(--sage) !important; border-color: var(--sage) !important }
+.lang-btn svg { width: 13px; height: 13px }
+
+/* ── HERO ──────────────────────────────────────────────── */
+#hero {
+  position: relative; height: 100vh; min-height: 600px;
+  background: var(--forest);
+  overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 0 8vw 10vh;
+}
+#hc { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none }
+.h-glow {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  animation: breathe 12s ease-in-out infinite;
+}
+.h-g1 {
+  width: 65vw; height: 65vw; top: -20%; right: -15%;
+  background: radial-gradient(circle, rgba(46,80,56,.55) 0%, transparent 70%);
+}
+.h-g2 {
+  width: 40vw; height: 40vw; bottom: -5%; left: -8%;
+  background: radial-gradient(circle, rgba(86,122,98,.22) 0%, transparent 65%);
+  animation-delay: 5s;
+}
+@keyframes breathe { 0%,100%{ transform:scale(1) } 50%{ transform:scale(1.18) } }
+
+.h-pre {
+  position: relative; z-index: 2;
+  font-family: 'DM Mono', monospace; font-size: .6rem;
+  letter-spacing: .35em; text-transform: uppercase;
+  color: var(--sage); margin-bottom: 1.4rem;
+  opacity: 0; animation: fadeUp .7s .1s forwards;
+}
+h1.h-name {
+  position: relative; z-index: 2;
+  font-family: 'Playfair Display', serif; font-weight: 900;
+  font-size: clamp(4.5rem, 13vw, 12rem);
+  line-height: .88; color: var(--cream);
+  opacity: 0; animation: fadeUp .8s .25s forwards;
+}
+.h-cn {
+  display: block;
+  font-family: 'Noto Serif SC', serif; font-weight: 300;
+  font-size: clamp(1rem, 2.8vw, 2.2rem);
+  color: var(--sage); letter-spacing: .35em; margin-top: .3em;
+}
+.h-line {
+  position: relative; z-index: 2; margin-top: 1.8rem;
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
+  font-size: clamp(1.05rem, 2.1vw, 1.55rem);
+  color: var(--mist); line-height: 1.55; max-width: 520px;
+  opacity: 0; animation: fadeUp .8s .5s forwards;
+}
+.h-line strong { font-style: normal; font-weight: 400; color: var(--dew) }
+.h-cta {
+  position: relative; z-index: 2; margin-top: 2rem;
+  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp .8s .7s forwards;
+}
+.h-lnk {
+  font-family: 'DM Mono', monospace; font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(239,232,214,.5); text-decoration: none;
+  display: flex; align-items: center; gap: .45rem; transition: color .22s;
+}
+.h-lnk:hover { color: var(--sage) }
+.h-lnk svg { width: 14px; height: 14px; flex-shrink: 0 }
+.h-sep { width: 1px; height: 14px; background: rgba(139,176,154,.18) }
+.h-scroll {
+  position: absolute; bottom: 10vh; right: 8vw; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: .8rem;
+  opacity: 0; animation: fadeUp .8s .9s forwards;
+}
+.h-scroll-line {
+  width: 1px; height: 60px;
+  background: linear-gradient(to bottom, var(--sage), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse { 0%,100%{ opacity:.5;transform:scaleY(1) } 50%{ opacity:1;transform:scaleY(1.2) } }
+.h-scroll-label {
+  font-family: 'DM Mono', monospace; font-size: .52rem; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--sage); opacity: .45; writing-mode: vertical-rl;
+}
+
+@keyframes fadeUp { from { opacity:0;transform:translateY(16px) } to { opacity:1;transform:none } }
+
+/* ── MARQUEE ───────────────────────────────────────────── */
+.marquee-wrap {
+  background: var(--fern); overflow: hidden;
+  padding: .85rem 0; border-top: 1px solid rgba(86,122,98,.3);
+  border-bottom: 1px solid rgba(86,122,98,.3);
+}
+.marquee-track {
+  display: flex; gap: 0; white-space: nowrap;
+  animation: marquee 28s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused }
+@keyframes marquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+.marquee-item {
+  font-family: 'DM Mono', monospace; font-size: .62rem; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(184,208,194,.55); padding: 0 2.5rem; flex-shrink: 0;
+  display: flex; align-items: center; gap: 2.5rem;
+}
+.marquee-dot { width: 3px; height: 3px; background: var(--sage); border-radius: 50%; flex-shrink: 0 }
+
+/* ── IDENTITY SLIDER ───────────────────────────────────── */
+#identity {
+  --split: 50%;
+  position: relative; height: 100vh; min-height: 600px;
+  overflow: hidden; cursor: none;
+}
+.id-panel {
+  position: absolute; inset: 0;
+  display: flex; align-items: center;
+  will-change: clip-path;
+}
+.id-l {
+  background: var(--moss);
+  clip-path: polygon(0 0, var(--split) 0, var(--split) 100%, 0 100%);
+}
+.id-r {
+  background: var(--fern2);
+  clip-path: polygon(var(--split) 0, 100% 0, 100% 100%, var(--split) 100%);
+}
+
+/* watermark ghost text behind */
+.id-ghost {
+  position: absolute; bottom: -5%; font-family: 'Playfair Display', serif;
+  font-weight: 900; font-style: italic;
+  font-size: clamp(5rem, 16vw, 18rem);
+  line-height: 1; white-space: nowrap; user-select: none; pointer-events: none;
+  color: rgba(255,255,255,.03); letter-spacing: -.02em;
+}
+.id-l .id-ghost { left: 3% }
+.id-r .id-ghost { right: 3% }
+
+.id-content {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 38%; max-width: 480px;
+}
+.id-l .id-content { left: 8% }
+.id-r .id-content { right: 8%; text-align: right }
+
+.id-num {
+  font-family: 'DM Mono', monospace; font-size: .58rem; letter-spacing: .3em; text-transform: uppercase;
+  color: rgba(139,176,154,.45); margin-bottom: 1.4rem;
+}
+.id-role {
+  font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 700; line-height: 1.0; color: var(--cream); margin-bottom: 1rem;
+}
+.id-role em { font-style: italic; color: var(--mist) }
+.id-desc {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
+  font-size: clamp(.95rem, 1.6vw, 1.15rem); color: var(--mist);
+  line-height: 1.72; margin-bottom: 1.4rem;
+}
+.id-tags { display: flex; flex-wrap: wrap; gap: .4rem }
+.id-r .id-tags { justify-content: flex-end }
+.id-tag {
+  font-family: 'DM Mono', monospace; font-size: .54rem; letter-spacing: .1em;
+  color: var(--sage); border-bottom: 1px solid rgba(86,122,98,.4);
+  padding-bottom: .08rem;
+}
+
+/* divider */
+.id-div {
+  position: absolute; top: 0; bottom: 0;
+  left: var(--split); width: 1px;
+  background: rgba(255,255,255,.1);
+  transform: translateX(-50%);
+  will-change: left;
+}
+.id-handle {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(12,26,14,.6);
+  backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: center;
+}
+.id-handle-inner {
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+}
+.id-handle svg { width: 14px; height: 14px; color: rgba(139,176,154,.6) }
+
+/* both-text appears near center */
+.id-both {
+  position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%);
+  font-family: 'DM Mono', monospace; font-size: .54rem; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(139,176,154,.5); white-space: nowrap; text-align: center;
+  opacity: 0; transition: opacity .4s;
+  pointer-events: none;
+}
+.id-both.show { opacity: 1 }
+
+/* instruction hint */
+.id-hint {
+  position: absolute; bottom: 6%; left: 50%; transform: translateX(-50%);
+  font-family: 'DM Mono', monospace; font-size: .54rem; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(139,176,154,.3); white-space: nowrap;
+  animation: hintFade 3s 1.5s forwards;
+}
+@keyframes hintFade { 0%{opacity:1} 80%{opacity:1} 100%{opacity:0} }
+
+/* ── ORBIT ─────────────────────────────────────────────── */
+#orbit {
+  background: var(--cream);
+  padding: 5vw 0 6vw;
+  display: flex; flex-direction: column; align-items: center;
+  overflow: hidden;
+}
+.o-top {
+  width: 100%; padding: 0 8vw; margin-bottom: 3rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.o-label {
+  font-family: 'DM Mono', monospace; font-size: .58rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--sage); display: flex; align-items: center; gap: .8rem;
+}
+.o-label::before { content: ''; width: 20px; height: 1px; background: var(--sage) }
+.o-title {
+  font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 700; color: var(--forest);
+}
+.o-title em { font-style: italic; color: var(--sage) }
+
+/* orbit field */
+.o-field {
+  position: relative;
+  width: min(600px, 86vw);
+  height: min(600px, 86vw);
+  flex-shrink: 0;
+}
+/* SVG rings */
+.o-svg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  pointer-events: none;
+}
+.o-center-el {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center; pointer-events: none;
+}
+.o-center-mark {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--sage); margin: 0 auto 8px;
+  box-shadow: 0 0 0 4px rgba(86,122,98,.1), 0 0 0 10px rgba(86,122,98,.05);
+}
+.o-center-txt {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
+  font-size: clamp(.8rem, 1.5vw, 1rem); color: var(--soft); line-height: 1.4;
+}
+
+.o-node {
+  position: absolute; transform: translate(-50%, -50%);
+  text-align: center; cursor: pointer;
+  transition: transform .3s cubic-bezier(.25,.46,.45,.94);
+}
+.o-node:hover { transform: translate(-50%,-50%) scale(1.08) }
+.o-node-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--fern); margin: 0 auto 6px;
+  box-shadow: 0 0 0 0 rgba(86,122,98,.5);
+  animation: pulse 3s ease-in-out infinite;
+}
+.o-node:nth-child(2) .o-node-dot { animation-delay: .75s }
+.o-node:nth-child(3) .o-node-dot { animation-delay: 1.5s }
+.o-node:nth-child(4) .o-node-dot { animation-delay: 2.25s }
+@keyframes pulse {
+  0%,100%{ box-shadow: 0 0 0 0 rgba(86,122,98,.5) }
+  60%{ box-shadow: 0 0 0 8px rgba(86,122,98,0) }
+}
+.o-node-name {
+  font-family: 'Playfair Display', serif; font-weight: 700;
+  font-size: clamp(.8rem, 1.4vw, 1rem); color: var(--forest);
+  white-space: nowrap; margin-bottom: 2px;
+}
+.o-node-sub {
+  font-family: 'DM Mono', monospace; font-size: clamp(.45rem, .8vw, .58rem);
+  letter-spacing: .06em; color: var(--soft); white-space: nowrap;
+}
+
+/* ── MOMENTS ───────────────────────────────────────────── */
+#moments { background: var(--parch) }
+.m-wrap { max-width: 1200px; margin: 0 auto; padding: 8rem 7vw }
+.m-head {
+  font-family: 'DM Mono', monospace; font-size: .58rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--sage); margin-bottom: 6rem;
+  display: flex; align-items: center; gap: .8rem;
+}
+.m-head::before { content: ''; width: 20px; height: 1px; background: var(--sage) }
+
+.m-item {
+  position: relative; padding: 4.5rem 0;
+  border-top: 1px solid rgba(90,116,98,.15);
+  display: grid;
+  grid-template-columns: 5rem 1fr 10rem;
+  grid-template-rows: auto auto;
+  gap: 0 3rem;
+  opacity: 0; transform: translateY(22px);
+  transition: opacity .65s cubic-bezier(.25,.46,.45,.94), transform .65s cubic-bezier(.25,.46,.45,.94);
+}
+.m-item.vis { opacity: 1; transform: none }
+.m-item:last-child { border-bottom: 1px solid rgba(90,116,98,.15) }
+
+/* giant watermark number */
+.m-bg-num {
+  position: absolute; top: 50%; left: -2%;
+  transform: translateY(-50%);
+  font-family: 'Playfair Display', serif; font-weight: 900;
+  font-size: clamp(6rem, 14vw, 12rem);
+  line-height: 1; color: rgba(90,116,98,.06);
+  user-select: none; pointer-events: none; letter-spacing: -.04em;
+}
+
+.m-n {
+  font-family: 'DM Mono', monospace; font-size: .58rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--sage); padding-top: .4rem; grid-column: 1; grid-row: 1;
+}
+.m-body { grid-column: 2; grid-row: 1 / 3 }
+.m-where {
+  font-family: 'DM Mono', monospace; font-size: .57rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--soft); margin-bottom: .7rem;
+}
+.m-title {
+  font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3.2vw, 2.4rem);
+  font-weight: 700; line-height: 1.1; color: var(--forest); margin-bottom: .8rem;
+}
+.m-caption {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
+  font-size: clamp(.95rem, 1.6vw, 1.12rem); color: var(--mid); line-height: 1.7;
+  max-width: 580px;
+}
+.m-stat { grid-column: 3; grid-row: 1; text-align: right; padding-top: .2rem }
+.m-stat-n {
+  display: block; font-family: 'Playfair Display', serif; font-weight: 900;
+  font-size: clamp(2rem, 4.5vw, 3.8rem); color: var(--fern2); line-height: 1;
+}
+.m-stat-l {
+  display: block; font-family: 'DM Mono', monospace; font-size: .5rem;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--soft); margin-top: .2rem;
+}
+
+/* ── SELF ──────────────────────────────────────────────── */
+#self {
+  background: var(--forest);
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.sl-left {
+  padding: 8rem 6vw 8rem 8vw;
+  border-right: 1px solid rgba(86,122,98,.18);
+}
+.sl-right {
+  padding: 8rem 8vw 8rem 6vw;
+}
+.sl-eyebrow {
+  font-family: 'DM Mono', monospace; font-size: .56rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--sage); margin-bottom: 2rem;
+  display: flex; align-items: center; gap: .8rem;
+}
+.sl-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--sage) }
+.sl-statement {
+  font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2.4rem);
+  font-weight: 700; line-height: 1.2; color: var(--cream); margin-bottom: 1.5rem;
+}
+.sl-statement em { font-style: italic; color: var(--sage) }
+.sl-bio {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
+  font-size: clamp(1rem, 1.7vw, 1.2rem); color: var(--mist); line-height: 1.75;
+  margin-bottom: 2rem;
+}
+.sl-interests {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: clamp(.95rem, 1.5vw, 1.08rem); color: rgba(139,176,154,.6);
+  line-height: 2.1;
+}
+.sl-interests span { color: var(--mist) }
+
+.sl-school {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(86,122,98,.18);
+}
+.sl-school:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0 }
+.sl-uni {
+  font-family: 'Playfair Display', serif; font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+  font-weight: 700; color: var(--cream); margin-bottom: .3rem;
+}
+.sl-deg {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
+  font-size: clamp(.9rem, 1.5vw, 1.05rem); color: var(--mist); margin-bottom: .4rem;
+}
+.sl-yr { font-family: 'DM Mono', monospace; font-size: .55rem; letter-spacing: .12em; color: var(--soft) }
+.sl-award {
+  margin-top: 2.5rem; padding-top: 2.5rem;
+  border-top: 1px solid rgba(86,122,98,.18);
+}
+.sl-award-label {
+  font-family: 'DM Mono', monospace; font-size: .55rem; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--sage); margin-bottom: 1rem;
+}
+.sl-award-text {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: clamp(.9rem, 1.4vw, 1rem); color: var(--mist); line-height: 2;
+}
+.sl-award-text span {
+  display: inline; border-bottom: 1px solid rgba(168,116,48,.35);
+  color: rgba(184,208,194,.8);
+}
+
+/* ── FOOTER ────────────────────────────────────────────── */
+footer {
+  background: var(--ink); padding: 2.8rem 8vw;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;
+}
+.f-name {
+  font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.4rem;
+  font-weight: 700; color: var(--cream);
+}
+.f-cn { font-family: 'Noto Serif SC', serif; font-weight: 300; font-size: .75rem; color: var(--sage); letter-spacing: .3em; margin-top: .15rem }
+.f-links { display: flex; gap: 2rem; list-style: none }
+.f-links a {
+  font-family: 'DM Mono', monospace; font-size: .56rem; letter-spacing: .2em; text-transform: uppercase;
+  color: #2A2A1A; text-decoration: none; display: flex; align-items: center; gap: .4rem; transition: color .2s;
+}
+.f-links a:hover { color: var(--sage) }
+.f-links svg { width: 12px; height: 12px }
+
+/* ── SCROLL REVEAL ─────────────────────────────────────── */
+.rv { opacity: 0; transform: translateY(20px); transition: opacity .7s cubic-bezier(.25,.46,.45,.94), transform .7s cubic-bezier(.25,.46,.45,.94) }
+.rv.vis { opacity: 1; transform: none }
+
+/* ── RESPONSIVE ────────────────────────────────────────── */
+@media (max-width: 900px) {
+  #identity { height: auto; min-height: auto }
+  .id-panel { position: relative; clip-path: none !important; height: 55vw; min-height: 320px }
+  .id-l { border-bottom: 1px solid rgba(86,122,98,.3) }
+  #identity { display: flex; flex-direction: column }
+  .id-div, .id-hint { display: none }
+  .id-content { position: relative; top: auto; transform: none; width: 84%; max-width: none; padding: 3.5rem 8vw }
+  .id-r .id-content { text-align: left }
+  .id-r .id-tags { justify-content: flex-start }
+  .id-ghost { display: none }
+  #self { grid-template-columns: 1fr }
+  .sl-left { border-right: none; border-bottom: 1px solid rgba(86,122,98,.18); padding: 5rem 7vw }
+  .sl-right { padding: 5rem 7vw }
+  .m-item { grid-template-columns: 3rem 1fr; gap: 0 1.5rem }
+  .m-stat { display: none }
+  nav .n-hide { display: none }
+  .o-node-sub { display: none }
+}
+@media (max-width: 560px) {
+  .m-wrap { padding: 5rem 5vw }
+  #hero { padding: 0 6vw 12vw }
+}
+</style>
+</head>
+<body>
+
+<div id="prog" aria-hidden="true"></div>
+<div id="cur"  aria-hidden="true"></div>
+<div id="curR" aria-hidden="true"></div>
+
+<!-- ── NAV ─────────────────────────────────────────────── -->
+<nav id="nav" aria-label="Site navigation">
+  <a href="#hero" class="n-logo">
+    <span class="en">Keyi Li</span><span class="zh">李柯毅</span>
+  </a>
+  <div class="n-row">
+    <a href="#identity" class="n-a n-hide"><span class="en">Identity</span><span class="zh">身份</span></a>
+    <a href="#orbit"    class="n-a n-hide"><span class="en">Domains</span><span class="zh">领域</span></a>
+    <a href="#moments"  class="n-a n-hide"><span class="en">Work</span><span class="zh">经历</span></a>
+    <a href="#self"     class="n-a"><span class="en">About</span><span class="zh">关于</span></a>
+    <button class="lang-btn" id="langBtn" aria-label="Toggle language / 切换语言">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+      </svg>
+      <span class="en">中文</span><span class="zh">EN</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────────── -->
+<section id="hero" aria-label="Introduction">
+  <canvas id="hc"></canvas>
+  <div class="h-glow h-g1" aria-hidden="true"></div>
+  <div class="h-glow h-g2" aria-hidden="true"></div>
+
+  <p class="h-pre">
+    <span class="en">Berkeley · Beijing · Building</span>
+    <span class="zh">伯克利 · 北京 · 构建中</span>
+  </p>
+
+  <h1 class="h-name">
+    <span id="scrambleName">Keyi Li</span>
+    <span class="h-cn" id="scrambleCn">李&nbsp;柯&nbsp;毅</span>
+  </h1>
+
+  <p class="h-line">
+    <span class="en"><strong>Product</strong> mind &amp; <strong>AI Agent</strong> engineer.<br>I build things that think — and make them feel human.</span>
+    <span class="zh"><strong>产品思维</strong>与 <strong>AI Agent</strong> 工程师。<br>我构建会思考的东西，并让它们感受人的温度。</span>
+  </p>
+
+  <div class="h-cta">
+    <a href="mailto:keyi_li@berkeley.edu" class="h-lnk">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      keyi_li@berkeley.edu
+    </a>
+    <div class="h-sep" aria-hidden="true"></div>
+    <a href="https://github.com/laokaoya" target="_blank" rel="noopener" class="h-lnk">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.547-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.5 11.5 0 0 1 12 5.803a11.5 11.5 0 0 1 3.006.404c2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      github.com/laokaoya
+    </a>
+  </div>
+
+  <div class="h-scroll" aria-hidden="true">
+    <div class="h-scroll-line"></div>
+    <span class="h-scroll-label">scroll</span>
+  </div>
+</section>
+
+<!-- ── MARQUEE ──────────────────────────────────────────── -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track" id="mTrack">
+    <!-- filled by JS for clean duplication -->
+  </div>
+</div>
+
+<!-- ── IDENTITY SLIDER ──────────────────────────────────── -->
+<section id="identity" aria-label="Dual identity: Product and Agent Engineer">
+
+  <!-- LEFT — Product -->
+  <div class="id-panel id-l" aria-hidden="true">
+    <span class="id-ghost">Product</span>
+    <div class="id-content">
+      <p class="id-num">01 / 02</p>
+      <h2 class="id-role"><span class="en">Product<br><em>Director</em></span><span class="zh">产品<br><em>负责人</em></span></h2>
+      <p class="id-desc">
+        <span class="en">I think in systems and user journeys. Co-founding MYIA, shaping agent products at SenseTime, writing investment theses — every role sharpened one belief: the best interfaces feel like they understand you.</span>
+        <span class="zh">我用系统思维理解用户旅程。联合创办 MYIA，定义商汤 Agent 产品，撰写投资逻辑——每段经历都在强化同一个信念：最好的界面让人感觉被理解。</span>
+      </p>
+      <div class="id-tags">
+        <span class="id-tag">0 → 1</span>
+        <span class="id-tag"><span class="en">User Research</span><span class="zh">用户研究</span></span>
+        <span class="id-tag"><span class="en">Hardware UX</span><span class="zh">硬件交互</span></span>
+        <span class="id-tag"><span class="en">Growth</span><span class="zh">增长运营</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT — Agent Engineer -->
+  <div class="id-panel id-r" aria-hidden="true">
+    <span class="id-ghost">Agent</span>
+    <div class="id-content">
+      <p class="id-num">02 / 02</p>
+      <h2 class="id-role"><span class="en">AI Agent<br><em>Engineer</em></span><span class="zh">AI Agent<br><em>工程师</em></span></h2>
+      <p class="id-desc">
+        <span class="en">I build the plumbing that makes agents actually work — orchestration pipelines, RAG systems, fine-tuned models, automation tools. I like getting into the guts of how intelligence deploys in the real world.</span>
+        <span class="zh">我搭建让 Agent 真正运转的底层管道——编排流水线、RAG 系统、模型微调、自动化工具。我喜欢深入研究智能如何在现实世界落地。</span>
+      </p>
+      <div class="id-tags">
+        <span class="id-tag">Multi-Agent</span>
+        <span class="id-tag">RAG</span>
+        <span class="id-tag">LLM Fine-tuning</span>
+        <span class="id-tag">CrewAI</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="id-div" aria-hidden="true">
+    <div class="id-handle">
+      <div class="id-handle-inner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M8 9l-4 3 4 3M16 9l4 3-4 3"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <p class="id-both" id="idBoth">
+    <span class="en">both, always</span><span class="zh">两者兼具，始终如此</span>
+  </p>
+  <p class="id-hint">
+    <span class="en">move cursor to explore</span><span class="zh">移动鼠标探索</span>
+  </p>
+</section>
+
+<!-- ── ORBIT ─────────────────────────────────────────────── -->
+<section id="orbit" aria-label="Domains explored">
+  <div class="o-top">
+    <p class="o-label rv"><span class="en">Fields explored</span><span class="zh">探索的领域</span></p>
+    <h2 class="o-title rv" style="transition-delay:.08s"><span class="en">Perpetual <em>explorer</em></span><span class="zh">持续<em>探索者</em></span></h2>
+  </div>
+
+  <div class="o-field rv" style="transition-delay:.15s" role="img" aria-label="Four orbiting domains: Education AI, Data Systems, Finance Research, Clean Energy">
+    <!-- Decorative rings (SVG) -->
+    <svg class="o-svg" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="300" cy="300" rx="255" ry="235" stroke="#B8D0C2" stroke-width=".6" stroke-dasharray="3 9" opacity=".5"/>
+      <ellipse cx="300" cy="300" rx="170" ry="155" stroke="#B8D0C2" stroke-width=".4" opacity=".35"/>
+      <ellipse cx="300" cy="300" rx="85" ry="78" stroke="#567A62" stroke-width=".4" opacity=".3"/>
+    </svg>
+
+    <div class="o-center-el">
+      <div class="o-center-mark"></div>
+      <p class="o-center-txt">
+        <span class="en">always<br>in orbit</span>
+        <span class="zh">持续<br>探索中</span>
+      </p>
+    </div>
+
+    <!-- Nodes — positions set by JS orbit animation -->
+    <div class="o-node" id="on0">
+      <div class="o-node-dot" aria-hidden="true"></div>
+      <div class="o-node-name"><span class="en">Education AI</span><span class="zh">教育 AI</span></div>
+      <div class="o-node-sub"><span class="en">Startup · Hackathon winner</span><span class="zh">创业 · 黑客马拉松冠军</span></div>
+    </div>
+    <div class="o-node" id="on1">
+      <div class="o-node-dot" aria-hidden="true"></div>
+      <div class="o-node-name"><span class="en">Data Systems</span><span class="zh">数据系统</span></div>
+      <div class="o-node-sub"><span class="en">3M POI · Deep learning</span><span class="zh">三百万条 POI · 深度学习</span></div>
+    </div>
+    <div class="o-node" id="on2">
+      <div class="o-node-dot" aria-hidden="true"></div>
+      <div class="o-node-name"><span class="en">Finance</span><span class="zh">金融研究</span></div>
+      <div class="o-node-sub"><span class="en">SVAR · Investment thesis</span><span class="zh">SVAR · 投资研究</span></div>
+    </div>
+    <div class="o-node" id="on3">
+      <div class="o-node-dot" aria-hidden="true"></div>
+      <div class="o-node-name"><span class="en">Clean Energy</span><span class="zh">清洁能源</span></div>
+      <div class="o-node-sub"><span class="en">Field research · Policy</span><span class="zh">田野调查 · 政策</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MOMENTS ──────────────────────────────────────────── -->
+<section id="moments" aria-label="Selected work">
+  <div class="m-wrap">
+    <p class="m-head"><span class="en">Selected moments</span><span class="zh">代表经历</span></p>
+
+    <div class="m-item">
+      <span class="m-bg-num" aria-hidden="true">01</span>
+      <div class="m-n">01</div>
+      <div class="m-body">
+        <p class="m-where">MYIA &nbsp;·&nbsp; <span class="en">Co-founder · 2025</span><span class="zh">联合创始人 · 2025</span></p>
+        <h3 class="m-title"><span class="en">Built an AI education startup from zero</span><span class="zh">从零搭建 AI 教育初创公司</span></h3>
+        <p class="m-caption">
+          <span class="en">Character IP, spoken English, gamification, picture books, adaptive assessment — all designed and shipped. Multi-agent orchestration powering a product that makes learning feel like play.</span>
+          <span class="zh">角色 IP、口语英语、游戏化、绘本、自适应评测——全部设计并上线。多智能体编排驱动一款让学习感觉像玩耍的产品。</span>
+        </p>
+      </div>
+      <div class="m-stat">
+        <span class="m-stat-n">100+</span>
+        <span class="m-stat-l"><span class="en">users · day one</span><span class="zh">用户 · 首日</span></span>
+      </div>
+    </div>
+
+    <div class="m-item">
+      <span class="m-bg-num" aria-hidden="true">02</span>
+      <div class="m-n">02</div>
+      <div class="m-body">
+        <p class="m-where">StellarNex &nbsp;·&nbsp; <span class="en">AdventureX · 2024</span><span class="zh">AdventureX · 2024</span></p>
+        <h3 class="m-title"><span class="en">Won first prize reimagining how people learn</span><span class="zh">以重新定义学习方式赢得冠军</span></h3>
+        <p class="m-caption">
+          <span class="en">Nine-round AI dialogue framework, noun-driven concept mapping, phenomenological peer matching — learning as universe exploration, built end-to-end in one weekend.</span>
+          <span class="zh">九轮 AI 对话框架、名词驱动概念映射、现象学体验匹配——把学习变成探索宇宙，一个周末全栈构建完成。</span>
+        </p>
+      </div>
+      <div class="m-stat">
+        <span class="m-stat-n">1st</span>
+        <span class="m-stat-l"><span class="en">prize · edu track</span><span class="zh">奖 · 教育赛道</span></span>
+      </div>
+    </div>
+
+    <div class="m-item">
+      <span class="m-bg-num" aria-hidden="true">03</span>
+      <div class="m-n">03</div>
+      <div class="m-body">
+        <p class="m-where">SenseTime &nbsp;·&nbsp; <span class="en">AI Agent Group · 2024</span><span class="zh">AI Agent 组 · 2024</span></p>
+        <h3 class="m-title"><span class="en">Quadrupled data throughput for in-vehicle AI agents</span><span class="zh">将车载 AI Agent 数据吞吐量提升四倍</span></h3>
+        <p class="m-caption">
+          <span class="en">Multithreaded Android automation pipeline, 50 → 200 samples/hour, feeding AgentFlow's training data. Then defined the SHAP-transparent multi-agent architecture on top.</span>
+          <span class="zh">多线程 Android 自动化流水线，50 → 200 条/小时，为 AgentFlow 提供训练数据。随后在此基础上设计了基于 SHAP 可解释性的多智能体架构。</span>
+        </p>
+      </div>
+      <div class="m-stat">
+        <span class="m-stat-n">×4</span>
+        <span class="m-stat-l"><span class="en">data throughput</span><span class="zh">数据吞吐量</span></span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SELF ──────────────────────────────────────────────── -->
+<section id="self" aria-label="About Keyi">
+  <div class="sl-left rv">
+    <p class="sl-eyebrow"><span class="en">The person</span><span class="zh">这个人</span></p>
+    <h2 class="sl-statement">
+      <span class="en">Chemist turned economist turned builder — still <em>learning</em>.</span>
+      <span class="zh">从化学家到经济学家再到构建者——仍在<em>学习</em>。</span>
+    </h2>
+    <p class="sl-bio">
+      <span class="en">I spend weekends on trails or behind a camera, catching light on forest floors. I play Go badly but with enthusiasm. I'm the kind of person who plans a whole trip around an obscure geological formation — and considers that completely normal.</span>
+      <span class="zh">周末不是在山路上，就是在镜头后，捕捉光线打在林地上的瞬间。我下围棋，水平不高，但热情不减。我会为了某个冷僻的地质景观规划整个行程，并认为这完全正常。</span>
+    </p>
+    <p class="sl-interests">
+      <span class="en"><span>Hiking</span> · <span>Eco-photography</span> · <span>Go (围棋)</span> · <span>Sustainable travel</span> · <span>Clean energy</span></span>
+      <span class="zh"><span>登山徒步</span> · <span>生态摄影</span> · <span>围棋</span> · <span>可持续旅行</span> · <span>清洁能源</span></span>
+    </p>
+  </div>
+
+  <div class="sl-right rv" style="transition-delay:.1s">
+    <div class="sl-school">
+      <div class="sl-uni">UC Berkeley</div>
+      <div class="sl-deg"><span class="en">M.S. Statistics</span><span class="zh">统计学硕士</span></div>
+      <div class="sl-yr">2025 — <span class="en">present</span><span class="zh">至今</span></div>
+    </div>
+    <div class="sl-school">
+      <div class="sl-uni">Peking University</div>
+      <div class="sl-deg"><span class="en">B.Sc. Chemistry &amp; Economics · Minor CS · Top 1%</span><span class="zh">化学 &amp; 经济学理学学士 · 辅修 CS · 专业前 1%</span></div>
+      <div class="sl-yr">2021 — 2025</div>
+    </div>
+    <div class="sl-award">
+      <p class="sl-award-label"><span class="en">Honors</span><span class="zh">荣誉</span></p>
+      <p class="sl-award-text">
+        <span class="en">
+          <span>PKU Honor Graduate '25</span> · <span>National Math Competition 2nd Prize</span> · <span>Internet+ Entrepreneurship 2nd Prize</span> · <span>PKU Outstanding Student '23 &amp; '24</span>
+        </span>
+        <span class="zh">
+          <span>北京大学优秀毕业生 2025</span> · <span>全国大学生数学竞赛二等奖</span> · <span>"互联网+"创业大赛二等奖</span> · <span>北大三好学生 2023 &amp; 2024</span>
+        </span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ───────────────────────────────────────────── -->
+<footer>
+  <div>
+    <div class="f-name">Keyi Li</div>
+    <div class="f-cn">李&nbsp;柯&nbsp;毅</div>
+  </div>
+  <ul class="f-links">
+    <li>
+      <a href="mailto:keyi_li@berkeley.edu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        keyi_li@berkeley.edu
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/laokaoya" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.547-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.5 11.5 0 0 1 12 5.803a11.5 11.5 0 0 1 3.006.404c2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        GitHub
+      </a>
+    </li>
+  </ul>
+</footer>
+
+<!-- ── SCRIPTS ────────────────────────────────────────────── -->
+<script>
+/* ── Language ─────────────────────────────────────────── */
+(function(){
+  const btn = document.getElementById('langBtn');
+  const H = document.documentElement;
+  H.dataset.lang = localStorage.getItem('kl') || 'en';
+  H.lang = H.dataset.lang;
+  btn.addEventListener('click', () => {
+    const n = H.dataset.lang === 'en' ? 'zh' : 'en';
+    H.dataset.lang = n; H.lang = n;
+    localStorage.setItem('kl', n);
+  });
+})();
+
+/* ── Cursor ───────────────────────────────────────────── */
+(function(){
+  const c = document.getElementById('cur');
+  const r = document.getElementById('curR');
+  let mx=0, my=0, rx=0, ry=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+  (function loop(){
+    c.style.left = mx+'px'; c.style.top = my+'px';
+    rx += (mx-rx)*.1; ry += (my-ry)*.1;
+    r.style.left = rx+'px'; r.style.top = ry+'px';
+    requestAnimationFrame(loop);
+  })();
+})();
+
+/* ── Nav + scroll progress ────────────────────────────── */
+(function(){
+  const nav  = document.getElementById('nav');
+  const prog = document.getElementById('prog');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('on', scrollY > 60);
+    const pct = scrollY / (document.body.scrollHeight - innerHeight) * 100;
+    prog.style.height = Math.min(pct, 100) + '%';
+  }, { passive: true });
+})();
+
+/* ── Marquee fill ─────────────────────────────────────── */
+(function(){
+  const items = [
+    { en: 'Product × Agent Engineer', zh: '产品 × Agent 工程师' },
+    { en: 'Berkeley · Beijing · Building', zh: '伯克利 · 北京 · 构建中' },
+    { en: 'Education AI · Data Systems · Finance · Clean Energy', zh: '教育 AI · 数据系统 · 金融研究 · 清洁能源' },
+    { en: 'Peking University · UC Berkeley', zh: '北京大学 · 加州大学伯克利分校' },
+  ];
+  const track = document.getElementById('mTrack');
+  // render twice for seamless loop
+  for (let pass = 0; pass < 2; pass++) {
+    items.forEach(it => {
+      const el = document.createElement('span');
+      el.className = 'marquee-item';
+      el.innerHTML = `<span class="en">${it.en}</span><span class="zh">${it.zh}</span><span class="marquee-dot" aria-hidden="true"></span>`;
+      track.appendChild(el);
+    });
+  }
+})();
+
+/* ── Text scramble ────────────────────────────────────── */
+(function(){
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@$%&';
+  function scramble(el, final, delay, speed) {
+    setTimeout(() => {
+      let iter = 0;
+      const timer = setInterval(() => {
+        el.innerHTML = final.split('').map((ch, i) => {
+          if (ch === ' ') return '&nbsp;';
+          if (i < Math.floor(iter)) return `<span style="color:var(--cream)">${final[i]}</span>`;
+          return `<span style="color:var(--sage);opacity:.7">${CHARS[Math.floor(Math.random()*CHARS.length)]}</span>`;
+        }).join('');
+        iter += speed;
+        if (iter >= final.length) { el.innerHTML = final; clearInterval(timer); }
+      }, 28);
+    }, delay);
+  }
+  window.addEventListener('load', () => {
+    scramble(document.getElementById('scrambleName'), 'Keyi Li', 500, 0.55);
+  });
+  // Chinese: character-by-character opacity reveal
+  window.addEventListener('load', () => {
+    const el = document.getElementById('scrambleCn');
+    const chars = ['李', '\u00A0', '柯', '\u00A0', '毅'];
+    el.innerHTML = chars.map(c => `<span style="opacity:0;transition:opacity .35s">${c}</span>`).join('');
+    chars.forEach((_, i) => {
+      setTimeout(() => { el.querySelectorAll('span')[i].style.opacity = '1'; }, 800 + i * 180);
+    });
+  });
+})();
+
+/* ── Identity slider ──────────────────────────────────── */
+(function(){
+  const sec = document.getElementById('identity');
+  const both = document.getElementById('idBoth');
+  let target = 50, current = 50, raf;
+
+  function update() {
+    current += (target - current) * 0.07;
+    sec.style.setProperty('--split', current + '%');
+    // show "both, always" near center
+    both.classList.toggle('show', Math.abs(current - 50) < 8);
+    raf = requestAnimationFrame(update);
+  }
+  raf = requestAnimationFrame(update);
+
+  sec.addEventListener('mousemove', e => {
+    const r = sec.getBoundingClientRect();
+    target = ((e.clientX - r.left) / r.width) * 100;
+    target = Math.max(5, Math.min(95, target));
+  });
+  sec.addEventListener('mouseleave', () => { target = 50; });
+  sec.addEventListener('touchmove', e => {
+    const r = sec.getBoundingClientRect();
+    target = ((e.touches[0].clientX - r.left) / r.width) * 100;
+    target = Math.max(5, Math.min(95, target));
+  }, { passive: true });
+})();
+
+/* ── Orbit animation ──────────────────────────────────── */
+(function(){
+  const nodes = [0,1,2,3].map(i => document.getElementById('on'+i));
+  const field = document.querySelector('.o-field');
+  let angle = -Math.PI/2; // start top
+  let paused = false;
+
+  nodes.forEach(n => {
+    n.addEventListener('mouseenter', () => paused = true);
+    n.addEventListener('mouseleave', () => paused = false);
+  });
+
+  function frame() {
+    if (!paused) angle += 0.004;
+    const W = field.offsetWidth, H = field.offsetHeight;
+    const cx = W/2, cy = H/2;
+    const rx = W * 0.43, ry = H * 0.40;
+    nodes.forEach((n, i) => {
+      const a = angle + (i / nodes.length) * Math.PI * 2;
+      const x = cx + Math.cos(a) * rx;
+      const y = cy + Math.sin(a) * ry;
+      n.style.left = x + 'px';
+      n.style.top  = y + 'px';
+    });
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* ── Scroll reveal ────────────────────────────────────── */
+(function(){
+  const io = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('vis'), i * 90);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: .08, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.rv, .m-item').forEach(el => io.observe(el));
+})();
+
+/* ── Hero canvas: leaves + fireflies ─────────────────── */
+(function(){
+  const cv = document.getElementById('hc');
+  const ctx = cv.getContext('2d');
+  let W, H;
+
+  function resize() { W = cv.width = cv.offsetWidth; H = cv.height = cv.offsetHeight; }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  const LC = ['#2E5038','#567A62','#142018','#8BB09A','#6B4A22','#A87430'];
+
+  function mkLeaf(init) {
+    return {
+      x: Math.random() * W, y: init ? Math.random() * H : -20,
+      s: 3 + Math.random() * 12,
+      vy: .25 + Math.random() * .7, vx: (Math.random()-.5)*.4,
+      r: Math.random()*Math.PI*2, rs: (Math.random()-.5)*.022,
+      a: .07 + Math.random()*.22, c: LC[Math.floor(Math.random()*LC.length)],
+      d: Math.random()*Math.PI*2, ds: .004+Math.random()*.009
+    };
+  }
+
+  const leaves = Array.from({length:55}, (_, i) => mkLeaf(i<46));
+
+  const flies = Array.from({length:24}, () => ({
+    x: Math.random()*W, y: Math.random()*H,
+    r: .7+Math.random()*1.8, ph: Math.random()*Math.PI*2,
+    sp: .003+Math.random()*.005,
+    dx: (Math.random()-.5)*90, dy: (Math.random()-.5)*90
+  }));
+
+  let t = 0;
+  (function frame(){
+    ctx.clearRect(0, 0, W, H);
+    t++;
+
+    // Fireflies
+    flies.forEach(f => {
+      const a = (Math.sin(t*f.sp+f.ph)*.5+.5) * .4;
+      const fx = f.x + Math.sin(t*.0013+f.ph)*f.dx;
+      const fy = f.y + Math.cos(t*.0016+f.ph)*f.dy;
+      ctx.save(); ctx.globalAlpha = a;
+      const g = ctx.createRadialGradient(fx,fy,0,fx,fy,f.r*5);
+      g.addColorStop(0,'rgba(139,176,154,1)'); g.addColorStop(1,'rgba(139,176,154,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(fx,fy,f.r*5,0,Math.PI*2); ctx.fill();
+      ctx.restore();
+    });
+
+    // Leaves
+    leaves.forEach(l => {
+      l.d += l.ds;
+      l.x += l.vx + Math.sin(l.d)*.5;
+      l.y += l.vy; l.r += l.rs;
+      if (l.y > H+20) Object.assign(l, mkLeaf(false));
+      ctx.save();
+      ctx.translate(l.x, l.y); ctx.rotate(l.r);
+      ctx.globalAlpha = l.a; ctx.fillStyle = l.c;
+      ctx.beginPath();
+      ctx.moveTo(0,-l.s);
+      ctx.bezierCurveTo( l.s*.7,-l.s*.4, l.s*.7, l.s*.4, 0,l.s);
+      ctx.bezierCurveTo(-l.s*.7, l.s*.4,-l.s*.7,-l.s*.4, 0,-l.s);
+      ctx.fill();
+      ctx.globalAlpha = l.a*.3; ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.lineWidth=.4;
+      ctx.beginPath(); ctx.moveTo(0,-l.s*.88); ctx.lineTo(0,l.s*.88); ctx.stroke();
+      ctx.restore();
+    });
+    requestAnimationFrame(frame);
+  })();
+})();
+</script>
+</body>
+</html>
