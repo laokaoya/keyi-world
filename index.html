@@ -123,7 +123,7 @@ nav:not(.on) .lang-btn { color: rgba(239,232,214,.5); border-color: rgba(239,232
   background: var(--forest);
   overflow: hidden;
   display: flex; flex-direction: column; justify-content: flex-end;
-  padding: 0 8vw 10vh;
+  padding: 0 8vw 13vh;
 }
 #hc { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none }
 .h-glow {
@@ -141,12 +141,112 @@ nav:not(.on) .lang-btn { color: rgba(239,232,214,.5); border-color: rgba(239,232
 }
 @keyframes breathe { 0%,100%{ transform:scale(1) } 50%{ transform:scale(1.18) } }
 
-.h-pre {
-  position: relative; z-index: 2;
-  font-family: 'DM Mono', monospace; font-size: .6rem;
-  letter-spacing: .35em; text-transform: uppercase;
-  color: var(--mist); margin-bottom: 1.4rem;
+/* ── DUAL CLOCK ──────────────────────────────────────── */
+.h-clock {
+  position: relative; z-index: 2; margin-bottom: 2.2rem;
   opacity: 0; animation: fadeUp .7s .1s forwards;
+}
+.h-clock-row {
+  display: flex; align-items: center; gap: 1rem;
+}
+.h-clock-city {
+  display: flex; align-items: center; gap: .55rem;
+  font-family: 'DM Mono', monospace;
+}
+.h-clock-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  border: 1.5px solid rgba(139,176,154,.35);
+  transition: background .7s, border-color .7s, box-shadow .7s;
+}
+.h-clock-dot.day {
+  background: var(--amber); border-color: var(--amber);
+  box-shadow: 0 0 6px rgba(168,116,48,.5);
+}
+.h-clock-dot.night {
+  background: rgba(90,110,160,.25); border-color: rgba(90,110,160,.45);
+}
+.h-clock-name {
+  font-size: .54rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--mist);
+}
+.h-clock-time {
+  font-size: .53rem; letter-spacing: .1em;
+  color: rgba(139,176,154,.42);
+}
+.h-clock-conn {
+  flex: 1; max-width: 90px; display: flex; align-items: center; gap: .35rem;
+}
+.h-clock-conn-line {
+  flex: 1; height: 1px; background: rgba(139,176,154,.1);
+}
+.h-clock-conn-diff {
+  font-family: 'DM Mono', monospace; font-size: .42rem; letter-spacing: .08em;
+  color: rgba(139,176,154,.28); white-space: nowrap;
+}
+.h-clock-quip {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
+  font-size: .88rem; color: rgba(139,176,154,.35);
+  margin-top: .45rem; letter-spacing: .03em;
+}
+
+/* ── STATUS BADGE ──────────────────────────────────────── */
+.h-status { position: relative; }
+.h-status-btn {
+  display: flex; align-items: center; gap: .45rem;
+  font-family: 'DM Mono', monospace; font-size: .58rem;
+  letter-spacing: .15em; text-transform: uppercase;
+  color: rgba(184,208,194,.55);
+  background: none; border: 1px solid rgba(184,208,194,.18);
+  border-radius: 2px; padding: .35rem .8rem;
+  cursor: pointer; transition: border-color .22s, color .22s;
+}
+.h-status-btn:hover,
+.h-status-btn[aria-expanded="true"] { border-color: rgba(184,208,194,.42); color: var(--dew) }
+.h-status-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--sage); flex-shrink: 0;
+  animation: statusPulse 2.5s ease-in-out infinite;
+}
+@keyframes statusPulse {
+  0%,100%{ opacity:.5; box-shadow:0 0 0 0 rgba(86,122,98,0) }
+  50%{ opacity:1; box-shadow:0 0 0 4px rgba(86,122,98,.2) }
+}
+.h-status-arr {
+  width: 10px; height: 10px; stroke: currentColor; stroke-width: 1.5; fill: none;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.h-status-btn[aria-expanded="true"] .h-status-arr { transform: rotate(45deg) }
+
+.h-status-drop {
+  position: absolute; bottom: calc(100% + .75rem); left: 0;
+  width: min(380px, 88vw);
+  background: rgba(10,18,12,.95);
+  backdrop-filter: blur(22px) saturate(130%);
+  border: 1px solid rgba(184,208,194,.12);
+  border-radius: 3px; padding: 1.3rem 1.4rem;
+  pointer-events: none; opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .25s cubic-bezier(.25,.46,.45,.94), transform .25s cubic-bezier(.25,.46,.45,.94);
+  box-shadow: 0 -16px 48px rgba(0,0,0,.55);
+  z-index: 50;
+}
+.h-status-drop.open { opacity: 1; transform: none; pointer-events: auto; }
+.h-status-row {
+  padding: .65rem 0;
+  border-bottom: 1px solid rgba(184,208,194,.07);
+}
+.h-status-row:first-child { padding-top: 0 }
+.h-status-row:last-child { border-bottom: none; padding-bottom: 0 }
+.h-status-phase {
+  display: block;
+  font-family: 'DM Mono', monospace; font-size: .47rem;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--sage); margin-bottom: .32rem;
+}
+.h-status-row p {
+  margin: 0; font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: .92rem; color: rgba(239,232,214,.62); line-height: 1.65;
 }
 h1.h-name {
   position: relative; z-index: 2;
@@ -159,21 +259,28 @@ h1.h-name {
   display: block;
   font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif; font-weight: 400;
   font-size: clamp(1.1rem, 3vw, 2.4rem);
-  color: var(--mist); letter-spacing: .5em; margin-top: .35em;
+  color: var(--mist); letter-spacing: .55em; margin-top: .55em;
   text-shadow: 0 0 40px rgba(139,176,154,.25);
 }
+.h-divider {
+  position: relative; z-index: 2;
+  width: 48px; height: 1px;
+  background: linear-gradient(to right, var(--sage), transparent);
+  margin-top: 2.8rem;
+  opacity: 0; animation: fadeUp .8s .44s forwards;
+}
 .h-line {
-  position: relative; z-index: 2; margin-top: 1.8rem;
+  position: relative; z-index: 2; margin-top: 1.6rem;
   font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
   font-size: clamp(1.05rem, 2.1vw, 1.55rem);
-  color: var(--mist); line-height: 1.55; max-width: 520px;
-  opacity: 0; animation: fadeUp .8s .5s forwards;
+  color: var(--mist); line-height: 1.6; max-width: 560px;
+  opacity: 0; animation: fadeUp .8s .55s forwards;
 }
 .h-line strong { font-style: normal; font-weight: 400; color: var(--dew) }
 .h-cta {
-  position: relative; z-index: 2; margin-top: 2rem;
+  position: relative; z-index: 2; margin-top: 2.5rem;
   display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
-  opacity: 0; animation: fadeUp .8s .7s forwards;
+  opacity: 0; animation: fadeUp .8s .75s forwards;
 }
 .h-lnk {
   font-family: 'DM Mono', monospace; font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
@@ -655,65 +762,218 @@ h1.h-name {
   line-height: 1.7;
 }
 
-/* ── MOMENTS ───────────────────────────────────────────── */
-#moments { background: var(--parch) }
-.m-wrap { max-width: 1200px; margin: 0 auto; padding: 8rem 7vw }
-.m-head {
-  font-family: 'DM Mono', monospace; font-size: .58rem; letter-spacing: .3em; text-transform: uppercase;
-  color: var(--sage); margin-bottom: 6rem;
-  display: flex; align-items: center; gap: .8rem;
+/* ── EXP (Experience Library) ──────────────────────────── */
+#exp {
+  background: var(--forest);
+  position: relative; min-height: 100vh; overflow: hidden;
 }
-.m-head::before { content: ''; width: 20px; height: 1px; background: var(--sage) }
-
-.m-item {
-  position: relative; padding: 4.5rem 0;
-  border-top: 1px solid rgba(90,116,98,.15);
-  display: grid;
-  grid-template-columns: 5rem 1fr 10rem;
-  grid-template-rows: auto auto;
-  gap: 0 3rem;
-  opacity: 0; transform: translateY(22px);
-  transition: opacity .65s cubic-bezier(.25,.46,.45,.94), transform .65s cubic-bezier(.25,.46,.45,.94);
+#exp::before {
+  content: '历';
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: min(82vw, 98vh);
+  color: rgba(255,255,255,.013);
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none; user-select: none; z-index: 0; line-height: 1;
 }
-.m-item.vis { opacity: 1; transform: none }
-.m-item:last-child { border-bottom: 1px solid rgba(90,116,98,.15) }
+.exp-grid-bg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(86,122,98,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(86,122,98,.05) 1px, transparent 1px);
+  background-size: 72px 72px;
+  z-index: 0; pointer-events: none;
+}
+.exp-header {
+  position: relative; z-index: 2;
+  padding: 5.5rem 8vw 0;
+  display: flex; justify-content: space-between; align-items: flex-end;
+}
+.exp-heading {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700; font-style: italic;
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+  color: var(--cream); line-height: 1;
+}
+.exp-heading-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: .56rem; letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(139,176,154,.45); margin-top: .55rem;
+}
+.exp-hint {
+  font-family: 'DM Mono', monospace;
+  font-size: .5rem; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(139,176,154,.3);
+  display: flex; align-items: center; gap: .5rem; padding-bottom: .2rem;
+}
+.exp-hint::before { content: ''; width: 18px; height: 1px; background: rgba(139,176,154,.22) }
 
-/* giant watermark number */
-.m-bg-num {
-  position: absolute; top: 50%; left: -2%;
-  transform: translateY(-50%);
+/* Bubble field */
+.exp-field {
+  position: relative; z-index: 2;
+  width: 100%; height: calc(100vh - 11rem); min-height: 500px;
+}
+
+@keyframes expFloat0 {
+  0%,100% { transform: translate(0,0) }
+  28%  { transform: translate(10px,-13px) }
+  55%  { transform: translate(-7px,8px) }
+  80%  { transform: translate(5px,-5px) }
+}
+@keyframes expFloat1 {
+  0%,100% { transform: translate(0,0) }
+  25%  { transform: translate(-11px,-9px) }
+  60%  { transform: translate(8px,11px) }
+  85%  { transform: translate(-4px,4px) }
+}
+@keyframes expFloat2 {
+  0%,100% { transform: translate(0,0) }
+  30%  { transform: translate(7px,12px) }
+  65%  { transform: translate(-9px,-5px) }
+  82%  { transform: translate(4px,7px) }
+}
+
+.exp-bubble {
+  position: absolute; border-radius: 50%; cursor: pointer; z-index: 3;
+}
+.exp-bubble-ring {
+  position: absolute; inset: -14px; border-radius: 50%;
+  border: 1px solid rgba(184,208,194,.07);
+  transition: border-color .5s, opacity .5s;
+  pointer-events: none;
+}
+.exp-bubble.active .exp-bubble-ring {
+  border-color: rgba(184,208,194,.38);
+  animation: ringPulse 2.8s ease-in-out infinite;
+}
+@keyframes ringPulse {
+  0%,100% { opacity:.45; transform:scale(1) }
+  50%     { opacity:1;   transform:scale(1.06) }
+}
+.exp-bubble-shell {
+  width: 100%; height: 100%; border-radius: 50%;
+  position: relative; overflow: hidden;
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
+  box-shadow: inset 0 1px 1px rgba(239,232,214,.08), 0 6px 32px rgba(0,0,0,.5);
+}
+.exp-bubble:hover .exp-bubble-shell {
+  transform: scale(1.07);
+  box-shadow: inset 0 1px 1px rgba(239,232,214,.12), 0 10px 50px rgba(0,0,0,.55), 0 0 45px rgba(184,208,194,.12);
+}
+.exp-bubble.active .exp-bubble-shell {
+  box-shadow: inset 0 1px 1px rgba(239,232,214,.14), 0 10px 60px rgba(0,0,0,.55), 0 0 90px rgba(184,208,194,.2);
+}
+.exp-bubble-bg {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 1px solid rgba(184,208,194,.14);
+}
+.exp-bubble-shine {
+  position: absolute; top: 11%; left: 17%; width: 30%; height: 20%;
+  background: rgba(239,232,214,.07); border-radius: 50%; filter: blur(5px);
+  pointer-events: none;
+}
+.exp-bubble-content {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 14%;
+}
+.exp-b-stat {
+  font-family: 'Playfair Display', serif; font-weight: 900; line-height: 1;
+  color: var(--dew); transition: transform .2s;
+}
+.exp-bubble:hover .exp-b-stat { transform: scale(1.06) }
+.exp-b-label {
+  font-family: 'DM Mono', monospace; letter-spacing: .08em; text-transform: uppercase;
+  color: rgba(184,208,194,.5); line-height: 1.4; margin-top: .3em;
+}
+.exp-b-year {
+  font-family: 'DM Mono', monospace; color: rgba(184,208,194,.24);
+  margin-top: .3em; letter-spacing: .06em;
+}
+
+/* Detail card */
+.exp-card {
+  position: fixed; bottom: 2.5rem; right: 4vw;
+  width: min(460px, 92vw);
+  background: rgba(12,20,14,.93);
+  backdrop-filter: blur(24px) saturate(130%);
+  border: 1px solid rgba(184,208,194,.14);
+  border-radius: 3px; padding: 2.2rem 2.2rem 2rem;
+  z-index: 200; pointer-events: none; opacity: 0;
+  transform: translateY(18px) scale(.97);
+  transition: opacity .35s cubic-bezier(.25,.46,.45,.94), transform .35s cubic-bezier(.25,.46,.45,.94);
+  box-shadow: 0 24px 80px rgba(0,0,0,.65);
+}
+.exp-card.show { opacity: 1; transform: none; pointer-events: auto; }
+.exp-card-close {
+  position: absolute; top: .9rem; right: .9rem;
+  width: 26px; height: 26px; border-radius: 2px;
+  background: none; border: 1px solid rgba(184,208,194,.18);
+  color: rgba(184,208,194,.5); font-size: .72rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: border-color .2s, color .2s; line-height: 1;
+}
+.exp-card-close:hover { border-color: var(--dew); color: var(--dew) }
+.exp-card-where {
+  font-family: 'DM Mono', monospace;
+  font-size: .52rem; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(184,208,194,.42); margin-bottom: .7rem;
+}
+.exp-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.25rem, 2.4vw, 1.7rem);
+  font-weight: 700; color: var(--cream);
+  line-height: 1.15; margin-bottom: 1rem; padding-right: 1.5rem;
+}
+.exp-card-caption {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: clamp(.9rem, 1.5vw, 1.02rem);
+  color: rgba(239,232,214,.68); line-height: 1.78;
+}
+.exp-card-foot {
+  display: flex; align-items: baseline; gap: .8rem;
+  margin-top: 1.4rem; padding-top: 1.2rem;
+  border-top: 1px solid rgba(184,208,194,.1);
+}
+.exp-card-stat {
   font-family: 'Playfair Display', serif; font-weight: 900;
-  font-size: clamp(6rem, 14vw, 12rem);
-  line-height: 1; color: rgba(90,116,98,.06);
-  user-select: none; pointer-events: none; letter-spacing: -.04em;
+  font-size: clamp(1.8rem, 2.8vw, 2.4rem); color: var(--dew); line-height: 1;
+}
+.exp-card-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .5rem; letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(184,208,194,.38); line-height: 1.5;
 }
 
-.m-n {
-  font-family: 'DM Mono', monospace; font-size: .58rem; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--sage); padding-top: .4rem; grid-column: 1; grid-row: 1;
+/* Mobile chips grid */
+.exp-mobile {
+  display: none; padding: 2rem 5vw 4rem;
+  gap: .85rem; grid-template-columns: 1fr 1fr;
+  position: relative; z-index: 2;
 }
-.m-body { grid-column: 2; grid-row: 1 / 3 }
-.m-where {
-  font-family: 'DM Mono', monospace; font-size: .57rem; letter-spacing: .16em; text-transform: uppercase;
-  color: var(--soft); margin-bottom: .7rem;
+.exp-mobile-chip {
+  background: rgba(20,32,24,.75);
+  border: 1px solid rgba(184,208,194,.11);
+  border-radius: 3px; padding: 1.4rem 1.2rem;
+  cursor: pointer;
+  transition: border-color .22s, background .22s;
 }
-.m-title {
-  font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3.2vw, 2.4rem);
-  font-weight: 700; line-height: 1.1; color: var(--forest); margin-bottom: .8rem;
+.exp-mobile-chip:hover,
+.exp-mobile-chip.active { border-color: rgba(184,208,194,.32); background: rgba(36,61,44,.5) }
+.exp-mc-stat {
+  font-family: 'Playfair Display', serif; font-weight: 900;
+  font-size: 1.85rem; color: var(--dew); line-height: 1; margin-bottom: .3rem;
 }
-.m-caption {
-  font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
-  font-size: clamp(.95rem, 1.6vw, 1.12rem); color: var(--mid); line-height: 1.7;
-  max-width: 580px;
+.exp-mc-label {
+  font-family: 'DM Mono', monospace; font-size: .48rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(184,208,194,.42); line-height: 1.4;
 }
-.m-stat { grid-column: 3; grid-row: 1; text-align: right; padding-top: .2rem }
-.m-stat-n {
-  display: block; font-family: 'Playfair Display', serif; font-weight: 900;
-  font-size: clamp(2rem, 4.5vw, 3.8rem); color: var(--fern2); line-height: 1;
-}
-.m-stat-l {
-  display: block; font-family: 'DM Mono', monospace; font-size: .5rem;
-  letter-spacing: .12em; text-transform: uppercase; color: var(--soft); margin-top: .2rem;
+.exp-mc-title {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: .92rem; color: rgba(239,232,214,.6);
+  margin-top: .65rem; line-height: 1.4;
 }
 
 /* ── SELF ──────────────────────────────────────────────── */
@@ -803,8 +1063,11 @@ footer {
 .f-links svg { width: 12px; height: 12px }
 
 /* ── CHINESE FONT OVERRIDES ─────────────────────────────── */
-[data-lang="zh"] .m-title {
+[data-lang="zh"] .exp-card-title {
   font-family: 'Noto Serif SC', serif; font-weight: 700; letter-spacing: .04em; font-style: normal;
+}
+[data-lang="zh"] .exp-mc-title {
+  font-family: 'Noto Serif SC', serif; font-weight: 300; font-style: normal; line-height: 1.7;
 }
 [data-lang="zh"] .sl-statement {
   font-family: 'Noto Serif SC', serif; font-weight: 700; letter-spacing: .03em;
@@ -820,8 +1083,8 @@ footer {
 [data-lang="zh"] .sl-bio {
   font-family: 'Noto Serif SC', serif; font-weight: 300; font-style: normal; line-height: 2;
 }
-[data-lang="zh"] .m-caption {
-  font-family: 'Noto Serif SC', serif; font-weight: 300; font-style: normal; line-height: 1.95;
+[data-lang="zh"] .exp-card-caption {
+  font-family: 'Noto Serif SC', serif; font-weight: 300; font-style: normal; line-height: 2;
 }
 [data-lang="zh"] .id-desc {
   font-family: 'Noto Serif SC', serif; font-weight: 300; font-style: normal; line-height: 1.9;
@@ -854,8 +1117,8 @@ footer {
   #self { grid-template-columns: 1fr }
   .sl-left { border-right: none; border-bottom: 1px solid rgba(86,122,98,.18); padding: 4.5rem 7vw }
   .sl-right { padding: 4.5rem 7vw }
-  .m-item { grid-template-columns: 3rem 1fr; gap: 0 1.5rem }
-  .m-stat { display: none }
+  .exp-header { padding: 4rem 6vw 0 }
+  .exp-hint { display: none }
   nav .n-hide { display: none }
   .o-node-sub { display: none }
   .o-inner { grid-template-columns: min(380px, 42vw) 1fr }
@@ -879,6 +1142,9 @@ footer {
   .h-sep { display: none }
   .h-scroll { right: 5vw; bottom: 7vh }
   .h-scroll-line { height: 40px }
+  .h-clock-conn { max-width: 60px }
+  .h-clock-quip { font-size: .78rem }
+  .h-status-drop { width: min(340px, 88vw) }
 
   /* Marquee */
   .marquee-item { font-size: .55rem; padding: 0 1.5rem; gap: 1.5rem }
@@ -899,11 +1165,11 @@ footer {
   .o-domain-title-en { font-size: clamp(1.8rem, 7vw, 2.5rem) }
   .o-proj { padding: 1.1rem 1.3rem }
 
-  /* Moments */
-  .m-wrap { padding: 4rem 5vw }
-  .m-item { grid-template-columns: 2.5rem 1fr; gap: 0 1rem; padding: 2.5rem 0 }
-  .m-title { font-size: clamp(1.15rem, 5.5vw, 1.8rem) }
-  .m-bg-num { font-size: clamp(5rem, 22vw, 9rem); left: -4% }
+  /* Exp */
+  .exp-field { display: none }
+  .exp-mobile { display: grid }
+  .exp-header { padding: 3.5rem 6vw 0 }
+  .exp-mc-title { font-size: .85rem }
 
   /* Self */
   .sl-left, .sl-right { padding: 3.5rem 6vw }
@@ -937,7 +1203,7 @@ footer {
   <div class="n-row">
     <a href="#identity" class="n-a n-hide"><span class="en">Identity</span><span class="zh">身份</span></a>
     <a href="#orbit"    class="n-a n-hide"><span class="en">Domains</span><span class="zh">领域</span></a>
-    <a href="#moments"  class="n-a n-hide"><span class="en">Work</span><span class="zh">经历</span></a>
+    <a href="#exp"  class="n-a n-hide"><span class="en">Work</span><span class="zh">经历</span></a>
     <a href="#self"     class="n-a"><span class="en">About</span><span class="zh">关于</span></a>
     <button class="lang-btn" id="langBtn" aria-label="Toggle language / 切换语言">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -954,15 +1220,36 @@ footer {
   <div class="h-glow h-g1" aria-hidden="true"></div>
   <div class="h-glow h-g2" aria-hidden="true"></div>
 
-  <p class="h-pre">
-    <span class="en">Berkeley · Beijing · Building</span>
-    <span class="zh">伯克利 · 北京 · 构建中</span>
-  </p>
+  <div class="h-clock" id="hClock">
+    <div class="h-clock-row">
+      <div class="h-clock-city">
+        <span class="h-clock-dot" id="hDotBkl"></span>
+        <span class="h-clock-name">Berkeley</span>
+        <span class="h-clock-time" id="hTimeBkl">––:––</span>
+      </div>
+      <div class="h-clock-conn">
+        <span class="h-clock-conn-line"></span>
+        <span class="h-clock-conn-diff" id="hClockDiff"></span>
+        <span class="h-clock-conn-line"></span>
+      </div>
+      <div class="h-clock-city">
+        <span class="h-clock-dot" id="hDotBjg"></span>
+        <span class="h-clock-name">Beijing</span>
+        <span class="h-clock-time" id="hTimeBjg">––:––</span>
+      </div>
+    </div>
+    <p class="h-clock-quip">
+      <span class="en">which end is thinking right now</span>
+      <span class="zh">此刻我在哪一端思考</span>
+    </p>
+  </div>
 
   <h1 class="h-name">
     <span id="scrambleName">Keyi Li</span>
     <span class="h-cn" id="scrambleCn">李&nbsp;柯&nbsp;毅</span>
   </h1>
+
+  <div class="h-divider" aria-hidden="true"></div>
 
   <p class="h-line">
     <span class="en">Where <strong>product intuition</strong> meets <strong>agent infrastructure</strong> — I close the gap between intelligence and experience.</span>
@@ -979,6 +1266,34 @@ footer {
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.547-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.5 11.5 0 0 1 12 5.803a11.5 11.5 0 0 1 3.006.404c2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
       github.com/laokaoya
     </a>
+    <div class="h-sep" aria-hidden="true"></div>
+    <div class="h-status">
+      <button class="h-status-btn" id="hStatusBtn" aria-expanded="false" aria-controls="hStatusDrop">
+        <span class="h-status-dot"></span>
+        <span class="en">Building</span><span class="zh">在建中</span>
+        <svg class="h-status-arr" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 8L8 2M8 2H4M8 2v4"/></svg>
+      </button>
+      <div class="h-status-drop" id="hStatusDrop" aria-hidden="true">
+        <div class="h-status-row">
+          <span class="h-status-phase en">Now</span>
+          <span class="h-status-phase zh">现在</span>
+          <p class="en">Building MYIA's agent infra · Stats @ Berkeley · Figuring out what "products with a soul" actually means</p>
+          <p class="zh">搭建 MYIA 的 Agent 基础设施 · 在伯克利上统计课 · 琢磨"有灵魂的产品"到底是什么意思</p>
+        </div>
+        <div class="h-status-row">
+          <span class="h-status-phase en">Next</span>
+          <span class="h-status-phase zh">接下来</span>
+          <p class="en">RAG-based memory for edu agents · LLM alignment primitives · Maybe writing more things down</p>
+          <p class="zh">为教育 Agent 做 RAG 记忆模块 · 探索 LLM 对齐的底层原语 · 也许开始认真写东西</p>
+        </div>
+        <div class="h-status-row">
+          <span class="h-status-phase en">Want to talk about</span>
+          <span class="h-status-phase zh">想聊的事</span>
+          <p class="en">Agent UX patterns · Cognitive load in AI products · Why most AI features are anti-features</p>
+          <p class="zh">Agent 的 UX 设计模式 · AI 产品里的认知负担 · 为什么大多数 AI 功能其实是反功能</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="h-scroll" aria-hidden="true">
@@ -1169,71 +1484,39 @@ footer {
   </div>
 </section>
 
-<!-- ── MOMENTS ──────────────────────────────────────────── -->
-<section id="moments" aria-label="Three detours">
-  <div class="m-wrap">
-    <p class="m-head"><span class="en">Three detours worth keeping</span><span class="zh">三个值得走的弯路</span></p>
+<!-- ── EXP (Experience Library) ──────────────────────────── -->
+<section id="exp" aria-label="Experience Library">
+  <div class="exp-grid-bg" aria-hidden="true"></div>
 
-    <div class="m-item">
-      <span class="m-bg-num" aria-hidden="true">01</span>
-      <div class="m-n">01</div>
-      <div class="m-body">
-        <p class="m-where"><span class="en">PKU · Geochemistry · 2021 · "the sinkhole of sinkholes"</span><span class="zh">北大 · 地球化学 · 2021 · "天坑中的天坑"</span></p>
-        <h3 class="m-title">
-          <span class="en">Arrived at my dream school in the one major I didn't want</span>
-          <span class="zh">考进了梦想的学校，偏偏是最不想去的专业</span>
-        </h3>
-        <p class="m-caption">
-          <span class="en">Every party, someone would ask my major, and I'd get that look. I started saying "chemistry" to save the explaining. Then I spent three years panic-exploring everything else — finance, carbon markets, genomics, hackathons — and accidentally became the most generalist person in any room. Turns out "escaping a pit" is a surprisingly good education.</span>
-          <span class="zh">每次聚会，说出专业就会收到那种眼神。后来我学聪明了，统称化学，省了口舌。然后用三年时间病急乱投医——金融、碳市场、基因组、黑客松——意外成了任何房间里最杂的那个人。"跳坑"竟然是一种挺好的教育。</span>
-        </p>
-      </div>
-      <div class="m-stat">
-        <span class="m-stat-n">3</span>
-        <span class="m-stat-l"><span class="en">degrees,<br>fields</span><span class="zh">学位，<br>跨领域</span></span>
-      </div>
+  <div class="exp-header">
+    <div>
+      <h2 class="exp-heading"><span class="en">Experience Library</span><span class="zh">经历档案</span></h2>
+      <p class="exp-heading-sub"><span class="en">Click any node to expand</span><span class="zh">点击任意节点展开详情</span></p>
     </div>
+    <p class="exp-hint" aria-hidden="true"><span class="en">6 nodes · hover or click</span><span class="zh">6 个节点 · 悬停或点击</span></p>
+  </div>
 
-    <div class="m-item">
-      <span class="m-bg-num" aria-hidden="true">02</span>
-      <div class="m-n">02</div>
-      <div class="m-body">
-        <p class="m-where"><span class="en">Italian Alps · Geological Survey · Birthday · 2024</span><span class="zh">意大利阿尔卑斯 · 野外考察 · 生日 · 2024</span></p>
-        <h3 class="m-title">
-          <span class="en">Climbed a mountain on my birthday, ate salad, saw 4.5 billion years of rock</span>
-          <span class="zh">生日那天爬了座山，吃了草，顺便看了45亿年的地层</span>
-        </h3>
-        <p class="m-caption">
-          <span class="en">No signal, a basic cabin, 5,000m of vertical. Above the treeline, watching fog roll across the Alps, I stopped worrying about career tracks for about an hour. Geologists think in deep time. It's a useful disorder. When you've seen rock that's been folding for a billion years, grad school anxiety starts to feel proportionate.</span>
-          <span class="zh">没信号，简陋小屋，负重垂直5000米。山雾快速弥漫的一瞬，我对职业规划的焦虑大约消失了一个小时。地质人习惯用更长的时间尺度看问题。当你见过折叠了十亿年的岩层，读研的焦虑好像也没那么大了。</span>
-        </p>
-      </div>
-      <div class="m-stat">
-        <span class="m-stat-n">45亿</span>
-        <span class="m-stat-l"><span class="en">years of<br>perspective</span><span class="zh">年的<br>时间尺度</span></span>
-      </div>
+  <div class="exp-field" id="expField"></div>
+  <div class="exp-mobile" id="expMobile"></div>
+
+  <div class="exp-card" id="expCard" role="dialog" aria-modal="true" aria-hidden="true">
+    <button class="exp-card-close" id="expCardClose" aria-label="Close">✕</button>
+    <p class="exp-card-where">
+      <span class="en" id="expCardWhereEn"></span>
+      <span class="zh" id="expCardWhereZh"></span>
+    </p>
+    <h3 class="exp-card-title">
+      <span class="en" id="expCardTitleEn"></span>
+      <span class="zh" id="expCardTitleZh"></span>
+    </h3>
+    <p class="exp-card-caption">
+      <span class="en" id="expCardCapEn"></span>
+      <span class="zh" id="expCardCapZh"></span>
+    </p>
+    <div class="exp-card-foot">
+      <span class="exp-card-stat"><span class="en" id="expCardStEn"></span><span class="zh" id="expCardStZh"></span></span>
+      <span class="exp-card-label"><span class="en" id="expCardLbEn"></span><span class="zh" id="expCardLbZh"></span></span>
     </div>
-
-    <div class="m-item">
-      <span class="m-bg-num" aria-hidden="true">03</span>
-      <div class="m-n">03</div>
-      <div class="m-body">
-        <p class="m-where"><span class="en">MYIA · Finals Week · 2025 · biggest mistake / best decision</span><span class="zh">MYIA · 期末月 · 2025 · 最蠢的决定 / 最对的事</span></p>
-        <h3 class="m-title">
-          <span class="en">Started a company during finals because the idea wouldn't leave me alone at 2am</span>
-          <span class="zh">期末月创业，因为那个想法在凌晨2点赶都赶不走</span>
-        </h3>
-        <p class="m-caption">
-          <span class="en">Every day I told myself: study first, then work on the product. Every day I did it backwards. I've since learned this is diagnostic. The things you can't stop thinking about at 2am are not a coincidence — they're an instruction. The product shipped. 100+ users on day one. I did pass my exams, narrowly.</span>
-          <span class="zh">每天告诉自己：先复习，再做产品。每天都反过来。后来我发现，这本身就是一种信号。凌晨2点停不下来的东西不是巧合，是指令。产品上线了，首日100+用户。考试也过了，险过。</span>
-        </p>
-      </div>
-      <div class="m-stat">
-        <span class="m-stat-n">2am</span>
-        <span class="m-stat-l"><span class="en">when it<br>clicked</span><span class="zh">灵光<br>乍现时</span></span>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -1615,6 +1898,163 @@ const ORBIT_DATA = [
   frame();
 })();
 
+/* ── Experience Library ───────────────────────────────── */
+(function(){
+  const EXPS = [
+    {
+      color:[86,122,98], stat:{en:'3',zh:'3'}, label:{en:'fields\ncrossed',zh:'个\n领域'}, year:'2021',
+      size:195, cx:10, cy:25, fa:'expFloat0', fd:'9.5s', fdy:'0s',
+      en:{where:'PKU · Geochemistry · "the sinkhole of sinkholes"',
+          title:'Arrived at my dream school in the one major I didn\'t want',
+          cap:'Three years of panic-exploring everything else — finance, carbon markets, genomics, hackathons — and accidentally becoming the most generalist person in any room. Escaping a pit is a surprisingly good education.'},
+      zh:{where:'北大 · 地球化学 · "天坑中的天坑"',
+          title:'考进了梦校，偏偏是最不想去的专业',
+          cap:'用三年时间病急乱投医——金融、碳市场、基因组、黑客松——意外成了任何房间里最杂的那个人。"跳坑"竟然是一种挺好的教育。'}
+    },
+    {
+      color:[86,122,98], stat:{en:'2am',zh:'2am'}, label:{en:'when it\nclicked',zh:'灵光\n乍现时'}, year:'2025',
+      size:188, cx:70, cy:18, fa:'expFloat2', fd:'12s', fdy:'-4s',
+      en:{where:'MYIA · Finals Week · 2025 · biggest mistake / best decision',
+          title:'Started a company during finals because the idea wouldn\'t leave me alone at 2am',
+          cap:'Every day: study first, then product. Every day: backwards. The things you can\'t stop thinking about at 2am are not a coincidence — they\'re an instruction. Product shipped. 100+ users day one. Exams passed, narrowly.'},
+      zh:{where:'MYIA · 期末月 · 2025 · 最蠢的决定 / 最对的事',
+          title:'期末月创业，因为那个想法在凌晨2点赶都赶不走',
+          cap:'每天告诉自己：先复习，再做产品。每天都反过来。凌晨2点停不下来的东西不是巧合，是指令。产品上线了，首日100+用户。考试也过了，险过。'}
+    },
+    {
+      color:[56,95,70], stat:{en:'45亿',zh:'45亿'}, label:{en:'years of\nperspective',zh:'年的\n时间尺度'}, year:'2024',
+      size:172, cx:44, cy:54, fa:'expFloat1', fd:'11s', fdy:'-3s',
+      en:{where:'Italian Alps · Geological Survey · Birthday · 2024',
+          title:'Climbed a mountain on my birthday, ate salad, saw 4.5 billion years of rock',
+          cap:'No signal, a basic cabin, 5,000m of vertical. Above the treeline watching fog roll across the Alps, career anxiety disappeared for about an hour. Geologists think in deep time. It\'s a useful disorder.'},
+      zh:{where:'意大利阿尔卑斯 · 野外考察 · 生日 · 2024',
+          title:'生日那天爬了座山，吃了草，顺便看了45亿年的地层',
+          cap:'没信号，简陋小屋，负重垂直5000米。山雾弥漫的一瞬，职业焦虑消失了大约一个小时。地质人习惯用更长的时间尺度看问题——当你见过折叠了十亿年的岩层，读研的焦虑好像也没那么大了。'}
+    },
+    {
+      color:[24,40,30], stat:{en:'M.S.',zh:'M.S.'}, label:{en:'Statistics\nBerkeley',zh:'统计学\n伯克利'}, year:'2025–',
+      size:148, cx:26, cy:68, fa:'expFloat2', fd:'10s', fdy:'-2s',
+      en:{where:'UC Berkeley · Statistics · 2025 – present',
+          title:'Came for the statistics, stayed for the 2am product spirals',
+          cap:'Statistics as epistemology — not just modeling, but how to reason under genuine uncertainty. Building quantitative foundations to pair with the AI engineering work that keeps me up anyway.'},
+      zh:{where:'UC 伯克利 · 统计学 · 2025 至今',
+          title:'来读统计，留下来因为凌晨的想法停不下来',
+          cap:'统计学是一种认识论——不只是建模，更是如何在不确定中做决策。在这里搭建定量基础，配合本来就让人睡不着的AI工程工作。'}
+    },
+    {
+      color:[115,88,48], stat:{en:'1st',zh:'1st'}, label:{en:'AdventureX\nEdu track',zh:'AdventureX\n教育赛道'}, year:'2024',
+      size:136, cx:80, cy:56, fa:'expFloat0', fd:'8.5s', fdy:'-6s',
+      en:{where:'AdventureX Hackathon · Education Track · 2024',
+          title:'Built an AI dialogue system solo end-to-end in one weekend, first place',
+          cap:'StellarNex: nine-round adaptive AI dialogue framework. One weekend, one person, full stack. Speed wasn\'t recklessness — it was proof that constraints clarify thinking.'},
+      zh:{where:'AdventureX 黑客松 · 教育赛道 · 2024',
+          title:'一个周末一个人全栈完成，拿了第一',
+          cap:'StellarNex：九轮AI对话框架，自适应学习。一个周末，一个人，全栈。快不是鲁莽——是在用限制逼出清晰。'}
+    },
+    {
+      color:[46,80,56], stat:{en:'×4',zh:'×4'}, label:{en:'data\nthroughput',zh:'数据\n吞吐量'}, year:'2024',
+      size:126, cx:53, cy:27, fa:'expFloat1', fd:'13s', fdy:'-8s',
+      en:{where:'SenseTime · AI Agent Infrastructure · 2024',
+          title:'Quadrupled training data throughput for in-vehicle AI agents',
+          cap:'Multithreaded Android automation: 50 → 200 samples/hour. The kind of engineering that makes the flashy demo possible — invisible, load-bearing, essential.'},
+      zh:{where:'商汤科技 · AI Agent 基础设施 · 2024',
+          title:'把车载AI Agent的训练数据吞吐量提升了四倍',
+          cap:'多线程自动化采集流水线：50 → 200 条/小时。这类工程工作让光鲜的demo成为可能——隐形的、承重的、不可或缺的。'}
+    }
+  ];
+
+  const expField  = document.getElementById('expField');
+  const expMobile = document.getElementById('expMobile');
+  const card      = document.getElementById('expCard');
+  const btnClose  = document.getElementById('expCardClose');
+  let activeIdx   = -1;
+
+  function fillCard(idx) {
+    const d = EXPS[idx];
+    document.getElementById('expCardWhereEn').textContent = d.en.where;
+    document.getElementById('expCardWhereZh').textContent = d.zh.where;
+    document.getElementById('expCardTitleEn').textContent = d.en.title;
+    document.getElementById('expCardTitleZh').textContent = d.zh.title;
+    document.getElementById('expCardCapEn').textContent   = d.en.cap;
+    document.getElementById('expCardCapZh').textContent   = d.zh.cap;
+    document.getElementById('expCardStEn').textContent    = d.stat.en;
+    document.getElementById('expCardStZh').textContent    = d.stat.zh;
+    document.getElementById('expCardLbEn').innerHTML      = d.label.en.replace('\n','<br>');
+    document.getElementById('expCardLbZh').innerHTML      = d.label.zh.replace('\n','<br>');
+  }
+
+  function showCard(idx) {
+    fillCard(idx); activeIdx = idx;
+    card.setAttribute('aria-hidden','false');
+    card.classList.add('show');
+    document.querySelectorAll('.exp-bubble').forEach((b,i) => b.classList.toggle('active', i===idx));
+    document.querySelectorAll('.exp-mobile-chip').forEach((b,i) => b.classList.toggle('active', i===idx));
+  }
+  function hideCard() {
+    card.classList.remove('show'); card.setAttribute('aria-hidden','true');
+    document.querySelectorAll('.exp-bubble,.exp-mobile-chip').forEach(b => b.classList.remove('active'));
+    activeIdx = -1;
+  }
+  btnClose.addEventListener('click', hideCard);
+  document.addEventListener('click', e => {
+    if (activeIdx >= 0 && !card.contains(e.target) && !e.target.closest('.exp-bubble') && !e.target.closest('.exp-mobile-chip')) hideCard();
+  });
+
+  // Build desktop bubbles
+  EXPS.forEach((d, i) => {
+    const el  = document.createElement('div');
+    el.className = 'exp-bubble';
+    el.setAttribute('role','button'); el.setAttribute('tabindex','0');
+    const half = d.size / 2;
+    const fs   = d.size > 170 ? '1.9rem' : d.size > 148 ? '1.5rem' : d.size > 128 ? '1.25rem' : '1.05rem';
+    const ls   = d.size > 150 ? '.5rem' : '.44rem';
+    const ys   = d.size > 155 ? '.43rem' : '.38rem';
+    const [r,g,b] = d.color;
+    const gradC = `rgba(${r},${g},${b},.72)`;
+    const gradM = `rgba(${r},${g},${b},.4)`;
+    el.style.cssText = `width:${d.size}px;height:${d.size}px;left:calc(${d.cx}% - ${half}px);top:calc(${d.cy}% - ${half}px);animation:${d.fa} ${d.fd} ease-in-out ${d.fdy} infinite;`;
+    el.innerHTML = `
+      <div class="exp-bubble-ring"></div>
+      <div class="exp-bubble-shell">
+        <div class="exp-bubble-bg" style="background:radial-gradient(circle at 38% 32%,${gradC} 0%,${gradM} 55%,rgba(12,26,14,.06) 100%);"></div>
+        <div class="exp-bubble-shine"></div>
+        <div class="exp-bubble-content">
+          <span class="exp-b-stat" style="font-size:${fs}"><span class="en">${d.stat.en}</span><span class="zh">${d.stat.zh}</span></span>
+          <span class="exp-b-label en" style="font-size:${ls}">${d.label.en.replace('\n','<br>')}</span>
+          <span class="exp-b-label zh" style="font-size:${ls}">${d.label.zh.replace('\n','<br>')}</span>
+          <span class="exp-b-year" style="font-size:${ys}">${d.year}</span>
+        </div>
+      </div>`;
+    el.addEventListener('click', () => activeIdx === i ? hideCard() : showCard(i));
+    el.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el.click(); } });
+    expField.appendChild(el);
+  });
+
+  // Build mobile chips
+  EXPS.forEach((d, i) => {
+    const el = document.createElement('div');
+    el.className = 'exp-mobile-chip';
+    el.setAttribute('role','button'); el.setAttribute('tabindex','0');
+    el.innerHTML = `
+      <div class="exp-mc-stat"><span class="en">${d.stat.en}</span><span class="zh">${d.stat.zh}</span></div>
+      <div class="exp-mc-label en">${d.label.en.replace('\n',' ')}</div>
+      <div class="exp-mc-label zh">${d.label.zh.replace('\n','')}</div>
+      <div class="exp-mc-title en">${d.en.title}</div>
+      <div class="exp-mc-title zh">${d.zh.title}</div>`;
+    el.addEventListener('click', () => activeIdx === i ? hideCard() : showCard(i));
+    expMobile.appendChild(el);
+  });
+
+  // Responsive switch
+  function checkLayout() {
+    const mobile = window.innerWidth < 640;
+    expField.style.display  = mobile ? 'none' : '';
+    expMobile.style.display = mobile ? 'grid' : 'none';
+  }
+  checkLayout();
+  window.addEventListener('resize', checkLayout, { passive: true });
+})();
+
 /* ── Scroll reveal ────────────────────────────────────── */
 (function(){
   const io = new IntersectionObserver(entries => {
@@ -1625,10 +2065,71 @@ const ORBIT_DATA = [
       }
     });
   }, { threshold: .08, rootMargin: '0px 0px -30px 0px' });
-  document.querySelectorAll('.rv, .m-item').forEach(el => io.observe(el));
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
 })();
 
-/* ── Hero canvas: leaves + fireflies ─────────────────── */
+/* ── Hero dual clock ──────────────────────────────────── */
+(function(){
+  const dotBkl  = document.getElementById('hDotBkl');
+  const dotBjg  = document.getElementById('hDotBjg');
+  const timeBkl = document.getElementById('hTimeBkl');
+  const timeBjg = document.getElementById('hTimeBjg');
+  const diffEl  = document.getElementById('hClockDiff');
+  if (!dotBkl) return;
+
+  function getHour(tz) {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: tz, hour: 'numeric', hour12: false
+    }).formatToParts(new Date());
+    const h = parts.find(p => p.type === 'hour');
+    return h ? parseInt(h.value) % 24 : 12;
+  }
+  function getTimeStr(tz) {
+    return new Intl.DateTimeFormat('en-US', {
+      timeZone: tz, hour: 'numeric', minute: '2-digit', hour12: true
+    }).format(new Date());
+  }
+
+  function update() {
+    const hBkl = getHour('America/Los_Angeles');
+    const hBjg = getHour('Asia/Shanghai');
+    timeBkl.textContent = getTimeStr('America/Los_Angeles');
+    timeBjg.textContent = getTimeStr('Asia/Shanghai');
+    dotBkl.className = 'h-clock-dot ' + (hBkl >= 7 && hBkl < 21 ? 'day' : 'night');
+    dotBjg.className = 'h-clock-dot ' + (hBjg >= 7 && hBjg < 21 ? 'day' : 'night');
+    let diff = hBjg - hBkl; if (diff < 0) diff += 24;
+    diffEl.textContent = '+' + diff + 'h';
+  }
+
+  update();
+  const now = new Date();
+  setTimeout(() => { update(); setInterval(update, 60000); },
+    (60 - now.getSeconds()) * 1000 - now.getMilliseconds());
+})();
+
+/* ── Hero status changelog ────────────────────────────── */
+(function(){
+  const btn  = document.getElementById('hStatusBtn');
+  const drop = document.getElementById('hStatusDrop');
+  if (!btn) return;
+
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    drop.setAttribute('aria-hidden', String(open));
+    drop.classList.toggle('open', !open);
+  });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.h-status') && drop.classList.contains('open')) {
+      btn.setAttribute('aria-expanded','false');
+      drop.setAttribute('aria-hidden','true');
+      drop.classList.remove('open');
+    }
+  });
+})();
+
+/* ── Hero canvas: intuition → infrastructure path ────── */
 (function(){
   const cv = document.getElementById('hc');
   const ctx = cv.getContext('2d');
@@ -1638,64 +2139,136 @@ const ORBIT_DATA = [
   resize();
   window.addEventListener('resize', resize, { passive: true });
 
-  const LC = ['#2E5038','#567A62','#142018','#8BB09A','#6B4A22','#A87430'];
+  // Five milestones along the conceptual path
+  const NODES = [
+    { bx:.12, by:.30, label:{en:'intuition',   zh:'直觉'   }, r:5, end:true  },
+    { bx:.30, by:.56, label:{en:'research',    zh:'研究'   }, r:4, end:false },
+    { bx:.50, by:.40, label:{en:'prototype',   zh:'原型'   }, r:4, end:false },
+    { bx:.70, by:.62, label:{en:'systems',     zh:'系统'   }, r:4, end:false },
+    { bx:.87, by:.36, label:{en:'infrastructure',zh:'基础设施'}, r:5.5, end:true },
+  ];
 
-  function mkLeaf(init) {
-    return {
-      x: Math.random() * W, y: init ? Math.random() * H : -20,
-      s: 3 + Math.random() * 12,
-      vy: .25 + Math.random() * .7, vx: (Math.random()-.5)*.4,
-      r: Math.random()*Math.PI*2, rs: (Math.random()-.5)*.022,
-      a: .07 + Math.random()*.22, c: LC[Math.floor(Math.random()*LC.length)],
-      d: Math.random()*Math.PI*2, ds: .004+Math.random()*.009
-    };
-  }
+  // Each node gets a slow personal drift
+  const drift = NODES.map(() => ({
+    ph:  Math.random() * Math.PI * 2,
+    phY: Math.random() * Math.PI * 2,
+    sp:  .00032 + Math.random() * .00022,
+    amp: .016  + Math.random() * .011,
+  }));
 
-  const leaves = Array.from({length:55}, (_, i) => mkLeaf(i<46));
-
-  const flies = Array.from({length:24}, () => ({
-    x: Math.random()*W, y: Math.random()*H,
-    r: .7+Math.random()*1.8, ph: Math.random()*Math.PI*2,
-    sp: .003+Math.random()*.005,
-    dx: (Math.random()-.5)*90, dy: (Math.random()-.5)*90
+  // A handful of ambient glimmer particles
+  const glimmers = Array.from({length:14}, () => ({
+    x: Math.random(), y: Math.random(),
+    r: .5 + Math.random() * 1.4,
+    ph: Math.random() * Math.PI * 2,
+    sp: .0018 + Math.random() * .0025,
+    rx: .05 + Math.random() * .08,
+    ry: .04 + Math.random() * .07,
   }));
 
   let t = 0;
+  let sigT = 0; // 0 → NODES.length-1 = full path
+
   (function frame(){
     ctx.clearRect(0, 0, W, H);
     t++;
+    sigT = (sigT + .0022) % (NODES.length - 1);
 
-    // Fireflies
-    flies.forEach(f => {
-      const a = (Math.sin(t*f.sp+f.ph)*.5+.5) * .4;
-      const fx = f.x + Math.sin(t*.0013+f.ph)*f.dx;
-      const fy = f.y + Math.cos(t*.0016+f.ph)*f.dy;
-      ctx.save(); ctx.globalAlpha = a;
-      const g = ctx.createRadialGradient(fx,fy,0,fx,fy,f.r*5);
-      g.addColorStop(0,'rgba(139,176,154,1)'); g.addColorStop(1,'rgba(139,176,154,0)');
-      ctx.fillStyle = g;
-      ctx.beginPath(); ctx.arc(fx,fy,f.r*5,0,Math.PI*2); ctx.fill();
-      ctx.restore();
-    });
+    const isZh = document.documentElement.dataset.lang === 'zh';
 
-    // Leaves
-    leaves.forEach(l => {
-      l.d += l.ds;
-      l.x += l.vx + Math.sin(l.d)*.5;
-      l.y += l.vy; l.r += l.rs;
-      if (l.y > H+20) Object.assign(l, mkLeaf(false));
+    // Current node positions (with drift)
+    const pos = NODES.map((n, i) => ({
+      x: (n.bx + Math.sin(t * drift[i].sp + drift[i].ph)  * drift[i].amp) * W,
+      y: (n.by + Math.cos(t * drift[i].sp * .68 + drift[i].phY) * drift[i].amp) * H,
+      r: n.r, end: n.end,
+      label: isZh ? n.label.zh : n.label.en,
+    }));
+
+    // ── Draw edges (dashed) ──
+    for (let i = 0; i < pos.length - 1; i++) {
+      const a = pos[i], b = pos[i+1];
+      const grad = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+      grad.addColorStop(0, 'rgba(86,122,98,.22)');
+      grad.addColorStop(.5,'rgba(86,122,98,.1)');
+      grad.addColorStop(1, 'rgba(86,122,98,.22)');
       ctx.save();
-      ctx.translate(l.x, l.y); ctx.rotate(l.r);
-      ctx.globalAlpha = l.a; ctx.fillStyle = l.c;
-      ctx.beginPath();
-      ctx.moveTo(0,-l.s);
-      ctx.bezierCurveTo( l.s*.7,-l.s*.4, l.s*.7, l.s*.4, 0,l.s);
-      ctx.bezierCurveTo(-l.s*.7, l.s*.4,-l.s*.7,-l.s*.4, 0,-l.s);
-      ctx.fill();
-      ctx.globalAlpha = l.a*.3; ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.lineWidth=.4;
-      ctx.beginPath(); ctx.moveTo(0,-l.s*.88); ctx.lineTo(0,l.s*.88); ctx.stroke();
+      ctx.strokeStyle = grad; ctx.lineWidth = .9;
+      ctx.setLineDash([3, 9]);
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      ctx.restore();
+    }
+
+    // ── Signal pulse along path ──
+    const seg = Math.min(Math.floor(sigT), pos.length - 2);
+    const frac = sigT - seg;
+    const sA = pos[seg], sB = pos[seg + 1];
+    const sx = sA.x + (sB.x - sA.x) * frac;
+    const sy = sA.y + (sB.y - sA.y) * frac;
+
+    // Trail glow
+    ctx.save();
+    const tg = ctx.createRadialGradient(sx, sy, 0, sx, sy, 14);
+    tg.addColorStop(0, 'rgba(184,208,194,.45)');
+    tg.addColorStop(1, 'rgba(184,208,194,0)');
+    ctx.fillStyle = tg;
+    ctx.beginPath(); ctx.arc(sx, sy, 14, 0, Math.PI*2); ctx.fill();
+    ctx.restore();
+
+    // Signal dot
+    ctx.save();
+    ctx.shadowBlur = 10; ctx.shadowColor = 'rgba(184,208,194,.7)';
+    ctx.fillStyle = 'rgba(184,208,194,.95)';
+    ctx.beginPath(); ctx.arc(sx, sy, 2.8, 0, Math.PI*2); ctx.fill();
+    ctx.restore();
+
+    // ── Draw nodes ──
+    pos.forEach((n, i) => {
+      // Glow halo
+      ctx.save();
+      const ng = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, 38);
+      ng.addColorStop(0, n.end ? 'rgba(86,122,98,.18)' : 'rgba(86,122,98,.09)');
+      ng.addColorStop(1, 'rgba(86,122,98,0)');
+      ctx.fillStyle = ng;
+      ctx.beginPath(); ctx.arc(n.x, n.y, 38, 0, Math.PI*2); ctx.fill();
+      ctx.restore();
+
+      // Ring for endpoints
+      if (n.end) {
+        ctx.save();
+        ctx.strokeStyle = 'rgba(86,122,98,.25)'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.arc(n.x, n.y, n.r + 5, 0, Math.PI*2); ctx.stroke();
+        ctx.restore();
+      }
+
+      // Dot
+      ctx.save();
+      ctx.fillStyle = n.end ? 'rgba(184,208,194,.7)' : 'rgba(86,122,98,.6)';
+      ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI*2); ctx.fill();
+      ctx.restore();
+
+      // Label
+      ctx.save();
+      const fs = Math.max(9, W * .0065);
+      ctx.font = `300 ${fs}px 'DM Mono', monospace`;
+      ctx.fillStyle = n.end ? 'rgba(184,208,194,.28)' : 'rgba(139,176,154,.18)';
+      ctx.textAlign = 'center';
+      ctx.fillText(n.label, n.x, n.y - n.r - 7);
       ctx.restore();
     });
+
+    // ── Ambient glimmers ──
+    glimmers.forEach(g => {
+      const a = (Math.sin(t * g.sp + g.ph) * .5 + .5) * .18;
+      const gx = (g.x + Math.sin(t * .00065 + g.ph) * g.rx) * W;
+      const gy = (g.y + Math.cos(t * .00072 + g.ph) * g.ry) * H;
+      ctx.save(); ctx.globalAlpha = a;
+      const gg = ctx.createRadialGradient(gx, gy, 0, gx, gy, g.r * 5);
+      gg.addColorStop(0,'rgba(139,176,154,1)'); gg.addColorStop(1,'rgba(139,176,154,0)');
+      ctx.fillStyle = gg;
+      ctx.beginPath(); ctx.arc(gx, gy, g.r * 5, 0, Math.PI*2); ctx.fill();
+      ctx.restore();
+    });
+
     requestAnimationFrame(frame);
   })();
 })();
